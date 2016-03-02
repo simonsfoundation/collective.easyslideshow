@@ -35,7 +35,12 @@ class SlideshowView(BrowserView):
             results = pc.searchResults(portal_type='Image',
                                        path=path,
                                        sort_on='getObjPositionInParent')
-        return results
+        return self.checkForExpired(results)
+
+    def checkForExpired(self, results):
+        """Take a list of images, filter out any that are expired
+        """
+        return [img for img in results if not img.isExpired()]
 
     def getPortletImages(self, slideshowfolderpath):
         # we check if there is a folder with path
@@ -56,7 +61,7 @@ class SlideshowView(BrowserView):
                 results = pc.searchResults(portal_type='Image',
                                            path=path,
                                            sort_on='getObjPositionInParent')
-        return results
+        return self.checkForExpired(results)
 
 
     def getSlideshowLocalProperties(self):
